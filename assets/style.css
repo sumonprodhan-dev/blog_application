@@ -1,0 +1,444 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+
+/* index.php css start */
+.home_page {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+}
+
+.home_page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(-45deg, #ff6ec4, #7873f5, #4ADEDE, #60c657);
+    background-size: 400% 400%;
+    animation: gradient 12s ease infinite;
+    z-index: -2;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+    animation: float 10s infinite ease-in-out;
+    z-index: -1;
+}
+
+.circle:nth-child(1) {
+    width: 120px;
+    height: 120px;
+    left: 10%;
+    bottom: -60px;
+    animation-delay: 0s;
+}
+
+.circle:nth-child(2) {
+    width: 80px;
+    height: 80px;
+    left: 70%;
+    bottom: -40px;
+    animation-delay: 2s;
+}
+
+.circle:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    left: 40%;
+    bottom: -50px;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateY(-50px) scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.container-box {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    padding: 40px;
+    width: 90%;
+    max-width: 900px;
+    transition: all 0.3s;
+}
+
+.container-box:hover {
+    transform: scale(1.01);
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+}
+
+.home_page_btn {
+    border-radius: 50px;
+    padding: 10px 25px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.home_page_btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
+.form-control {
+    border-radius: 50px;
+    padding: 12px;
+    border: none;
+    outline: none;
+}
+
+.card-section {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 15px;
+    padding: 30px;
+    transition: all 0.3s ease;
+}
+
+.card-section:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-5px);
+}
+
+.dont-have-account a {
+    text-decoration: none;
+}
+
+.dont-have-account a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    margin-top: 25px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* index.php css end */
+
+
+
+/* register.php css start */
+
+.registration_page {
+    font-family: 'Poppins', sans-serif;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    position: relative;
+}
+
+.register-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+    color: #fff;
+    transition: 0.3s ease;
+}
+
+.register-card:hover {
+    transform: translateY(-3px);
+}
+
+.register-card h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-weight: 600;
+    color: #fff;
+}
+
+.reg-login-here {
+    text-decoration: none;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+.reg-login-here:hover {
+    text-decoration: underline;
+}
+
+/* register.php css end */
+
+
+
+/* user dashboard css start */
+.navbar {
+    background: linear-gradient(90deg, #0d6efd, #0056b3);
+    padding: 15px 25px;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: #fff !important;
+    font-size: 1.4rem;
+    letter-spacing: 0.5px;
+}
+
+.navbar .btn {
+    border-radius: 25px;
+}
+
+/* Welcome Section */
+.welcome-text {
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+}
+
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card h5 {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.card h2 {
+    color: #0d6efd;
+    font-weight: 700;
+}
+
+/* User Info Card */
+.user-info-card {
+    border-left: 5px solid #0d6efd;
+}
+
+table th {
+    width: 150px;
+}
+
+footer {
+    margin-top: 80px;
+    background: #0d6efd;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+/* Profile image */
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #0d6efd;
+    margin-bottom: 15px;
+}
+
+/* Dark mode */
+.dark-mode {
+    background-color: #121212 !important;
+    color: #f5f5f5 !important;
+}
+
+.dark-mode .card {
+    background-color: #1e1e1e;
+    color: #fff;
+}
+
+.dark-mode .navbar {
+    background: linear-gradient(90deg, #1f1f1f, #000);
+}
+
+.dark-mode footer {
+    background: #000;
+}
+
+#darkModeToggle {
+    background: transparent;
+    border: 1px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+#darkModeToggle:hover {
+    background: white;
+    color: #0d6efd;
+}
+
+/* user dashboard css end */
+
+
+
+/* admin dashboard css start */
+.admin_page_sidebar {
+    width: 240px;
+    background: linear-gradient(45deg, #1544d1, #1392a3, #0d7fa1f6, #1544d1);
+    color: #fff;
+    padding: 25px 15px;
+    position: fixed;
+    height: 100%;
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+    transition: 0.5s;
+}
+
+.admin_page_sidebar h4 {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 30px;
+    letter-spacing: 0.5px;
+}
+
+.admin_page_sidebar a {
+    display: block;
+    color: #e0e0e0;
+    text-decoration: none;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.admin_page_sidebar a:hover,
+.admin_page_sidebar a.active {
+    background: #fff;
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+/* Content Area */
+.content {
+    margin-left: 250px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    transition: 0.3s;
+}
+
+/* Topbar */
+.admin_page_topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 15px 25px;
+    border-radius: 12px;
+}
+
+.admin_page_topbar h5 {
+    font-weight: 700;
+    color: #333;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card h6 {
+    color: #6c757d;
+    font-weight: 600;
+}
+
+.card h3 {
+    font-weight: 700;
+    color: #0d6efd;
+}
+
+/* Table */
+.table thead{
+    background: #0d6efd;
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+    .admin_page_sidebar {
+        position: absolute;
+        left: -260px;
+    }
+
+    .admin_page_sidebar.show {
+        left: 0;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    #menuToggle {
+        display: block;
+    }
+}
+
+#menuToggle {
+    display: none;
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: #0d6efd;
+}
+
+/* admin dashboard css end */
