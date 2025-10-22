@@ -1,11 +1,15 @@
-<?php
-include 'config.php';
+<?php include 'config.php';
 session_start();
 
 if (!isset($_SESSION['admin'])) {
     header('location: index.php');
     exit;
 }
+
+$sql = "SELECT id, name, email, phone, gender, joined FROM users";
+$result = mysqli_query($conn, $sql);
+
+
 ?>
 
 <!doctype html>
@@ -99,46 +103,22 @@ if (!isset($_SESSION['admin'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Sumon Prodhan</td>
-                        <td>sumonpro.dev@gmail.com</td>
-                        <td>01402042826</td>
-                        <td>Male</td>
-                        <td>2025-10-20</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>jone due</td>
-                        <td>future@example.com</td>
-                        <td>018xxxxxxxx</td>
-                        <td>Male</td>
-                        <td>2025-10-18</td>
-                        <td>
-                            <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </td>
-                    </tr>
                     <?php
-                        if (isset($users)) {
-                            foreach ($users as $user) {
-                                $user_id = 1;
-                                echo '<tr>';
-                                echo '<td>' . $user['$user_id++'] . '</td>';
-                                echo '<td>' . $user['name'] . '</td>';
-                                echo '<td>' . $user['email'] . '</td>';
-                                echo '<td>' . $user['phone'] . '</td>';
-                                echo '<td>' . $user['gender'] . '</td>';
-                                echo '<td>' . $user['joined'] . '</td>';
-                                echo '<td>';
-                                echo '<button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>';
-                                echo '<button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>';
-                                echo '</td>';
-                                echo '</tr>';
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)) {?>
+                                <tr>
+                                    <td><?php echo $row['id']; ?></td>
+                                    <td><?php echo $row['name']; ?></td>
+                                    <td><?php echo $row['email']; ?></td>
+                                    <td><?php echo $row['phone']; ?></td>
+                                    <td><?php echo $row['gender']; ?></td>
+                                    <td><?php echo $row['joined']; ?></td>
+                                    <td>
+                                        <button class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                    </td>
+                                </tr>
+                            <?php
                             }
                         }
                     ?>

@@ -1,4 +1,4 @@
-<?php
+<?php include 'config.php';
 session_start();
 
 
@@ -84,6 +84,7 @@ if (isset($_POST['guest'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PHP Dashboard Portal</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 
@@ -121,7 +122,13 @@ if (isset($_POST['guest'])) {
 
                             <form method="POST">
                                 <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
-                                <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
+                                <div class="position-relative">
+                                    <input type="password" name="password" id="login-password" class="form-control mb-3" placeholder="Password" required>
+                                    <div class="register-overlay" id="loginEye">
+                                        <i class="bi bi-eye-slash"></i>
+                                    </div>
+                                </div>
+
                                 <button name="login" class="btn btn-primary home_page_btn w-100">Login</button>
                             </form>
                             <p class="mt-3 small text-light">
@@ -143,7 +150,20 @@ if (isset($_POST['guest'])) {
             </div>
         </div>
     </main>
+    <script>
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginEye = document.getElementById('loginEye');
 
+        loginEye.addEventListener('click', function() {
+            if (loginPasswordInput.type === 'password') {
+                loginPasswordInput.type = 'text';
+                this.innerHTML = '<i class="bi bi-eye"></i>';
+            } else {
+                loginPasswordInput.type = 'password';
+                this.innerHTML = '<i class="bi bi-eye-slash"></i>';
+            }
+        });
+    </script>
 </body>
 
 </html>
