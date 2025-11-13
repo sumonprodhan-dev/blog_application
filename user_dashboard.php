@@ -1,118 +1,127 @@
 <?php
-session_start();
+include 'config.php';
 
-if (!isset($_SESSION['user'])) {
-    header('location: index.php');
-    exit;
+if (!isset($_SESSION['user_id'])) {
+  header('location: login.php');
+  exit();
 }
+
+$sql = "SELECT * FROM users WHERE id = :user_id";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':user_id', $_SESSION['user_id']);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_OBJ);
+
+
+$sql = "SELECT * FROM blogs WHERE user_id = :user_id";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':user_id', $_SESSION['user_id']);
+$stmt->execute();
+$blog = $stmt->fetchAll(PDO::FETCH_OBJ);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Dashboard</title>
-
-    <!-- Bootstrap & Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="./assets/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/css/user_dashboard.css">
 </head>
+<body>
 
-<body class="bg-light">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h4 class="text-center my-3">My User Panel</h4>
+    <a href="#" class="active"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+    <a href="create_blog.php"><i class="bi bi-plus-circle me-2"></i> Create Post</a>
+    <a href="#"><i class="bi bi-journal-text me-2"></i> My Posts</a>
+    <a href="#"><i class="bi bi-person-lines-fill me-2"></i> Edit Profile</a>
+    <a href="index.php" class="text-info"><i class="bi bi-box-arrow-left me-2 text-info"></i> Back to Website</a>
+    <a href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+  </div>
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg shadow-sm">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"><i class="bi bi-speedometer2"></i> User Dashboard</a>
-        <div class="d-flex align-items-center gap-3">
-            <button id="darkModeToggle" class="btn"><i class="bi bi-moon"></i></button>
-            <a href="logout.php" class="btn btn-outline-light btn-sm px-3">
-                <i class="bi bi-box-arrow-right"></i> Logout
-            </a>
-        </div>
-    </div>
-</nav>
-
-<!-- Main Content -->
-<div class="container mt-5">
-    <div class="text-center mb-4">
-        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile" class="profile-img shadow-sm">
-        <h2 class="welcome-text">👋 Welcome, <span id="userName">Sumon Prodhan</span></h2>
-        <p class="text-muted">You are successfully logged in!</p>
+  <!-- Main Content -->
+  <div class="content">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="mb-4">Welcome, <?= htmlspecialchars($user->name) ?> 👋</h3>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="row g-4">
-        <div class="col-md-4">
-            <div class="card text-center p-4">
-                <i class="bi bi-folder-check fs-1 text-primary mb-2"></i>
-                <h5>Total Projects</h5>
-                <h2>5</h2>
-            </div>
+    <!-- Profile Card -->
+    <div class="profile-card mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-2 text-center">
+          <img src="./assets/images/users/<?= $user->image ?>" alt="Profile Picture">
         </div>
-
-        <div class="col-md-4">
-            <div class="card text-center p-4">
-                <i class="bi bi-hourglass-split fs-1 text-warning mb-2"></i>
-                <h5>Pending Tasks</h5>
-                <h2>3</h2>
-            </div>
+        <div class="col-md-8">
+          <h5><?= htmlspecialchars($user->name) ?></h5>
+          <p class="text-muted mb-1"><?= htmlspecialchars($user->email) ?></p>
+          <p><strong>Total Blogs:</strong></p>
         </div>
-
-        <div class="col-md-4">
-            <div class="card text-center p-4">
-                <i class="bi bi-check2-circle fs-1 text-success mb-2"></i>
-                <h5>Completed Tasks</h5>
-                <h2>12</h2>
-            </div>
+        <div class="col-md-2 text-end">
+          <a href="#" class="btn btn-custom"><i class="bi bi-pencil-square me-1"></i> Edit Profile</a>
         </div>
+      </div>
     </div>
 
-    <!-- User Info -->
-    <div class="mt-5">
-        <div class="card p-4 user-info-card shadow-sm">
-            <h5 class="fw-bold mb-3"><i class="bi bi-person-lines-fill text-primary"></i> User Information</h5>
-            <table class="table table-striped align-middle">
-                <tr>
-                    <th><i class="bi bi-person"></i> Name</th>
-                    <td id="infoName">Sumon Prodhan</td>
-                </tr>
-                <tr>
-                    <th><i class="bi bi-envelope"></i> Email</th>
-                    <td id="infoEmail">sumon@example.com</td>
-                </tr>
-                <tr>
-                    <th><i class="bi bi-telephone"></i> Phone</th>
-                    <td id="infoPhone">017xxxxxxxx</td>
-                </tr>
-                <tr>
-                    <th><i class="bi bi-gender-male"></i> Gender</th>
-                    <td id="infoGender">Male</td>
-                </tr>
-            </table>
-        </div>
+    <!-- Create Post Button -->
+    <div class="mb-4">
+      <a href="create_blog.php" class="btn btn-custom"><i class="bi bi-plus-circle me-1"></i> Create New Post</a>
     </div>
-</div>
 
-<!-- Footer -->
-<footer>
-    <p class="mb-0">&copy; <?= date("Y"); ?> Developed by <a class="text-white" target="_blank" href="https://sumonprodev.wixsite.com/sumonprodhan">Sumon Prodhan</a></p>
-</footer>
+    <!-- Recent Posts Table -->
+    <?php
+    if(count($blog) > 0) {?>
+      <div class="card shadow-sm border-0">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold">My Recent Posts</h5>
+      </div>
+      <div class="card-body">
+        <table class="table align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Title</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php foreach ($blog as $post) : ?>
+              <tr>
+                <td><?= htmlspecialchars($post->title) ?></td>
+                <td>
+                  <span class="badge bg-success">
+                    <?= htmlspecialchars($post->status) ?>
+                  </span>
+                </td>
+                <td><?= htmlspecialchars($post->created_at) ?></td>
+                <td class="text-center">
+                  <a href="edit_blog.php?id=<?= $post->id ?>" class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-pencil-square"></i></a>
+                  <a href="delete_blog.php?id=<?= $post->id ?>" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <?php }else{ ?>
+    <div class="card shadow-sm border-0">
+      <div class="card-header bg-white">
+        <h5 class="mb-0 fw-bold">My Recent Posts</h5>
+      </div>
+      <div class="card-body">
+        <p class="text-muted">No blog posts found.</p>
+      </div>
+    </div>
+    <?php }
+    ?>
+  </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Dark Mode Script -->
-<script>
-document.getElementById('darkModeToggle').addEventListener('click', function () {
-    document.body.classList.toggle('dark-mode');
-    const icon = this.querySelector('i');
-    icon.classList.toggle('bi-moon');
-    icon.classList.toggle('bi-sun');
-});
-</script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

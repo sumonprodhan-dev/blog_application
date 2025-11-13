@@ -1,0 +1,60 @@
+body {
+    background-color: #f8fafc;
+    font-family: 'Poppins', sans-serif;
+}
+
+.sidebar {
+    height: 100vh;
+    background-color: #0f172a;
+    padding-top: 20px;
+    color: #fff;
+    position: fixed;
+    width: 250px;
+}
+
+.sidebar a {
+    display: block;
+    color: #e2e8f0;
+    padding: 12px 20px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    background-color: #1e293b;
+    color: #3b82f6;
+    border-left: 4px solid #3b82f6;
+}
+
+.content {
+    margin-left: 260px;
+    padding: 30px;
+}
+
+.profile-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.profile-card img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.btn-custom {
+    background-color: #3b82f6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 20px;
+}
+
+.btn-custom:hover {
+    background-color: #2563eb;
+}

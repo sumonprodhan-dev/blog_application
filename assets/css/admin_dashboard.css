@@ -1,0 +1,88 @@
+body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .sidebar {
+            height: 100vh;
+            background-color: #0f172a;
+            position: fixed;
+            width: 250px;
+            color: #fff;
+            padding-top: 20px;
+        }
+
+        .sidebar h4 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #e2e8f0;
+            padding: 12px 20px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover,
+        .sidebar a.active {
+            background-color: #1e293b;
+            color: #3b82f6;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .content {
+            margin-left: 260px;
+            padding: 30px;
+        }
+
+        /* Topbar */
+        .admin_page_topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            padding: 15px 25px;
+            border-radius: 12px;
+        }
+
+        .admin_page_topbar h5 {
+            font-weight: 700;
+            color: #333;
+        }
+
+        .card-stats {
+            border-radius: 10px;
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            transition: 0.3s;
+        }
+
+        .card-stats:hover {
+            transform: translateY(-3px);
+        }
+
+        .card-stats i {
+            font-size: 2rem;
+            color: #3b82f6;
+        }
+
+        .table th {
+            background-color: #f1f5f9;
+        }
+
+        .btn-custom {
+            background-color: #3b82f6;
+            color: #fff;
+            border-radius: 6px;
+            border: none;
+            padding: 6px 16px;
+        }
+
+        .btn-custom:hover {
+            background-color: #2563eb;
+        }

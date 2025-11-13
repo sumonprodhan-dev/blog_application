@@ -1,0 +1,67 @@
+body {
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Navbar Style */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      padding: 15px 30px;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      color: #0d6efd !important;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-back {
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-back:hover {
+      background-color: #0d6efd;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    /* Card Style */
+    .card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .form-control {
+      border-radius: 10px;
+    }
+
+    h2 {
+      font-weight: 700;
+      text-align: center;
+      color: #333;
+      margin-bottom: 25px;
+    }
+
+    .btn-success {
+      border-radius: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+      background-color: #28a745;
+      transform: scale(1.03);
+    }

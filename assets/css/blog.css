@@ -1,0 +1,48 @@
+body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .page-header {
+      background: linear-gradient(to right, #007bff, #f2aa10);
+      color: white;
+      padding: 80px 0;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-weight: 700;
+    }
+    .blog-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: 0.3s;
+    }
+    .blog-card:hover {
+      transform: translateY(-5px);
+    }
+    .blog-card img {
+      height: 220px;
+      object-fit: cover;
+      width: 100%;
+    }
+    .blog-card-body {
+      padding: 20px;
+    }
+    .sidebar {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+    .col-lg-4 .sticky-top {
+      top: 70px; /* Adjust this value based on your header's actual height */
+      z-index: 1019; /* Lower than the navbar's z-index (1020) to prevent overlap */
+    }
+    footer {
+      background: #212529;
+      color: #ccc;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 60px;
+    }
