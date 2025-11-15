@@ -117,7 +117,7 @@ if (isset($_POST['updateBlog'])) {
 
 <body class=" bg-light">
   <div class="header">
-    <?php include 'header.php'; ?>
+    <?php include 'navbar.php'; ?>
   </div>
   <section class="create-blog-header ">
     <div class="container">

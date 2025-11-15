@@ -117,7 +117,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             </span>
           </a>
           <ul class="dropdown-menu dropdown-menu-end shadow" aria-labelledby="userDropdown">
-            <?php if ($_SESSION['role'] == 'admin') : ?>
+            <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'author') : ?>
               <li><a class="dropdown-item" href="admin_dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Admin Panel</a></li>
             <?php else : ?>
               <li><a class="dropdown-item" href="user_dashboard.php"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>

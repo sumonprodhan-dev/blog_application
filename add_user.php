@@ -1,10 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
+<?php 
+include 'config.php';
+if (!isset($_SESSION['user_id'])) {
+  header('location: login.php');
+  exit;
+}
+$stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
+$stmt->bindParam(':id', $_SESSION['user_id']);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_OBJ);
+?>
 <head>
   <meta charset="UTF-8">
   <title>Add User | Admin Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
   <link rel="stylesheet" href="./assets/css/add_user.css">
 </head>
 
@@ -13,9 +24,14 @@
   <!-- Top Navbar -->
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="#">Admin Panel</a>
+      <?php if($user->role === 'admin'){
+        echo '<a class="navbar-brand" href="admin_dashboard.php">Admin Dashboard</a>';
+      }else{
+        echo '<a class="navbar-brand" href="admin_dashboard.php">Author Dashboard</a>';
+      }
+        ?>
       <a href="admin_dashboard.php" class="btn btn-outline-primary btn-back">
-        ← Back to Dashboard
+        <i class="bi bi-box-arrow-left me-2"></i>Back to Dashboard
       </a>
     </div>
   </nav>
@@ -30,7 +46,7 @@
 
   ?>
   <!-- Add User Form -->
-  <div class="container flex-grow-1 d-flex justify-content-center align-items-center">
+  <div class="container flex-grow-1 d-flex justify-content-center align-items-center py-5">
     <div class="col-md-7">
       <div class="card p-4 p-md-5">
         <h2>Add New User</h2>
@@ -93,9 +109,7 @@
     </div>
   </div>
 
-  <footer class="text-center py-3 text-muted">
-    © <?php echo date("Y"); ?> Admin Dashboard | All Rights Reserved
-  </footer>
+  <?php include('footer.php'); ?>
 
 </body>
 

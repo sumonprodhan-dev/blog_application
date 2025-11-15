@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'author') {
     header('location: login.php');
     exit;
 }
@@ -28,7 +28,6 @@ $blogs = $stmt->fetchAll(PDO::FETCH_OBJ);
     <div class="sidebar">
         <h4 class="mt-4"><i class="bi bi-gear-fill me-2"></i> Admin Panel</h4>
         <a href="admin_dashboard.php"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-        <a href="manage_users.php"><i class="bi bi-people me-2"></i> Manage Users</a>
         <a href="manage_blogs.php" class="active"><i class="bi bi-journal-text me-2"></i> Manage Blogs</a>
         <a href="add_user.php"><i class="bi bi-person-plus me-2"></i> Add User</a>
         <a href="#"><i class="bi bi-gear me-2"></i> Settings</a>

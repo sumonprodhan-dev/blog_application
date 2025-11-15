@@ -1,15 +1,22 @@
 <?php
 include 'config.php';
 
-if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['user_id'])) {
     header('location: login.php');
     exit;
 }
 
+$user_id_to_edit = $_GET['id'];
+
+// If the user is not an admin, they can only edit their own profile
+if ($_SESSION['role'] !== 'admin' && $_SESSION['user_id'] != $user_id_to_edit) {
+    header('location: user_dashboard.php');
+    exit;
+}
+
 if (isset($_GET['id'])) {
-    $user_id = $_GET['id'];
     $stmt = $conn->prepare("SELECT * FROM users WHERE id = :id");
-    $stmt->bindParam(':id', $user_id);
+    $stmt->bindParam(':id', $user_id_to_edit);
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_OBJ);
 }
@@ -17,17 +24,26 @@ if (isset($_GET['id'])) {
 if (isset($_POST['update_user'])) {
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $role = $_POST['role'];
 
-    $stmt = $conn->prepare("UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id");
+    if ($_SESSION['role'] === 'admin') {
+        $role = $_POST['role'];
+        $stmt = $conn->prepare("UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id");
+        $stmt->bindParam(':role', $role);
+    } else {
+        $stmt = $conn->prepare("UPDATE users SET name = :name, email = :email WHERE id = :id");
+    }
+
     $stmt->bindParam(':name', $name);
     $stmt->bindParam(':email', $email);
-    $stmt->bindParam(':role', $role);
-    $stmt->bindParam(':id', $user_id);
+    $stmt->bindParam(':id', $user_id_to_edit);
 
     if ($stmt->execute()) {
         $_SESSION['success'] = "User updated successfully.";
-        header('location: admin_dashboard.php');
+        if ($_SESSION['role'] === 'admin') {
+            header('location: manage_users.php');
+        } else {
+            header('location: user_dashboard.php');
+        }
         exit;
     } else {
         $_SESSION['error'] = "Failed to update user.";
@@ -63,16 +79,18 @@ if (isset($_POST['update_user'])) {
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" value="<?= htmlspecialchars($user->email) ?>">
                             </div>
-                            <div class="mb-3">
-                                <label for="role" class="form-label">Role</label>
-                                <select class="form-select" id="role" name="role">
-                                    <option value="user" <?= $user->role === 'user' ? 'selected' : '' ?>>User</option>
-                                    <option value="author" <?= $user->role === 'author' ? 'selected' : '' ?>>Author</option>
-                                    <option value="admin" <?= $user->role === 'admin' ? 'selected' : '' ?>>Admin</option>
-                                </select>
-                            </div>
+                            <?php if ($_SESSION['role'] === 'admin') : ?>
+                                <div class="mb-3">
+                                    <label for="role" class="form-label">Role</label>
+                                    <select class="form-select" id="role" name="role">
+                                        <option value="user" <?= $user->role === 'user' ? 'selected' : '' ?>>User</option>
+                                        <option value="author" <?= $user->role === 'author' ? 'selected' : '' ?>>Author</option>
+                                        <option value="admin" <?= $user->role === 'admin' ? 'selected' : '' ?>>Admin</option>
+                                    </select>
+                                </div>
+                            <?php endif; ?>
                             <button type="submit" name="update_user" class="btn btn-primary">Update User</button>
-                            <a href="admin_dashboard.php" class="btn btn-secondary">Cancel</a>
+                            <a href="<?= $_SESSION['role'] === 'admin' ? 'manage_users.php' : 'user_dashboard.php' ?>" class="btn btn-secondary">Cancel</a>
                         </form>
                     </div>
                 </div>

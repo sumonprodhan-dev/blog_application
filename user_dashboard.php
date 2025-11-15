@@ -1,7 +1,7 @@
 <?php
 include 'config.php';
 
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'user') {
   header('location: login.php');
   exit();
 }
@@ -37,8 +37,8 @@ $blog = $stmt->fetchAll(PDO::FETCH_OBJ);
     <h4 class="text-center my-3">My User Panel</h4>
     <a href="#" class="active"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
     <a href="create_blog.php"><i class="bi bi-plus-circle me-2"></i> Create Post</a>
-    <a href="#"><i class="bi bi-journal-text me-2"></i> My Posts</a>
-    <a href="#"><i class="bi bi-person-lines-fill me-2"></i> Edit Profile</a>
+    <a href="my_posts.php"><i class="bi bi-journal-text me-2"></i> My Posts</a>
+    <a href="edit_user.php?id=<?= $_SESSION['user_id'] ?>"><i class="bi bi-person-lines-fill me-2"></i> Edit Profile</a>
     <a href="index.php" class="text-info"><i class="bi bi-box-arrow-left me-2 text-info"></i> Back to Website</a>
     <a href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
   </div>
@@ -61,7 +61,7 @@ $blog = $stmt->fetchAll(PDO::FETCH_OBJ);
           <p><strong>Total Blogs:</strong></p>
         </div>
         <div class="col-md-2 text-end">
-          <a href="#" class="btn btn-custom"><i class="bi bi-pencil-square me-1"></i> Edit Profile</a>
+          <a href="edit_user.php?id=<?= $_SESSION['user_id'] ?>" class="btn btn-custom"><i class="bi bi-pencil-square me-1"></i> Edit Profile</a>
         </div>
       </div>
     </div>

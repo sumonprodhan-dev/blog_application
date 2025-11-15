@@ -1,6 +1,6 @@
 <?php
 include 'config.php';
-if (!isset($_SESSION['user_id'])) {
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin' && $_SESSION['role'] !== 'author') {
     header('location: login.php');
     exit;
 }
@@ -48,10 +48,10 @@ $recent_users = $recent_users_stmt->fetchAll(PDO::FETCH_OBJ);
     <div class="sidebar">
         <h4 class="mt-4"><i class="bi bi-gear-fill me-2"></i> Admin Panel</h4>
         <a href="admin_dashboard.php" class="active"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
-        <a href="manage_users.php"><i class="bi bi-people me-2"></i> Manage Users</a>
+        <?php if ($user->role === 'admin') { ?><a href="manage_users.php"><i class="bi bi-people me-2"></i> Manage Users</a><?php } ?>
         <a href="manage_blogs.php"><i class="bi bi-journal-text me-2"></i> Manage Blogs</a>
         <a href="add_user.php"><i class="bi bi-person-plus me-2"></i> Add User</a>
-        <a href="#"><i class="bi bi-gear me-2"></i> Settings</a>
+        <?php if ($user->role === 'admin') { ?><a href="#"><i class="bi bi-gear me-2"></i> Settings</a><?php } ?>
         <a href="index.php" class="text-info"><i class="bi bi-box-arrow-left me-2 text-info"></i> Back to Website</a>
         <a href="logout.php" class="text-danger"><i class="bi bi-box-arrow-right me-2 text-danger"></i> Logout</a>
     </div>
@@ -107,51 +107,75 @@ $recent_users = $recent_users_stmt->fetchAll(PDO::FETCH_OBJ);
                 <h5 class="fw-bold mb-0">User Activity Overview</h5>
             </div>
             <div class="card-body">
-                <table class="table align-middle">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Posts</th>
-                            <th class="text-center">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php foreach ($recent_users as $key => $recent_user) : ?>
-                            <?php
-                            // Fetch post count for each user
-                            $post_count_stmt = $conn->prepare("SELECT COUNT(*) FROM blogs WHERE user_id = :user_id");
-                            $post_count_stmt->bindParam(':user_id', $recent_user->id);
-                            $post_count_stmt->execute();
-                            $post_count = $post_count_stmt->fetchColumn();
-                            ?>
+                <?php
+                if ($user->role === 'admin') { ?>
+                    <table class="table align-middle">
+                        <thead>
                             <tr>
-                                <td><?= $key + 1 ?></td>
-                                <td><?= htmlspecialchars($recent_user->name) ?></td>
-                                <td><?= htmlspecialchars($recent_user->email) ?></td>
-                                <td>
-                                    <span class="badge bg-<?= $recent_user->role === 'admin' ? 'success' : 'primary' ?>">
-                                        <?= htmlspecialchars(ucfirst($recent_user->role)) ?>
-                                    </span>
-                                </td>
-                                <td><?= $post_count ?></td>
-                                <td class="text-center">
-                                    <a href="edit_user.php?id=<?= $recent_user->id ?>" class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-pencil-square"></i></a>
-                                    <?php if ($recent_user->id !== $_SESSION['user_id']) : ?>
-                                        <a href="delete_user.php?id=<?= $recent_user->id ?>" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
-                                        <?php if ($recent_user->role !== 'admin') : ?>
-                                            <a href="change_role.php?id=<?= $recent_user->id ?>&role=<?= $recent_user->role === 'author' ? 'user' : 'author' ?>" class="btn btn-sm btn-custom">
-                                                Make <?= $recent_user->role === 'author' ? 'User' : 'Author' ?>
-                                            </a>
-                                        <?php endif; ?>
-                                    <?php endif; ?>
-                                </td>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Posts</th>
+                                <th class="text-center">Actions</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($recent_users as $key => $recent_user) : ?>
+                                <?php
+                                // Fetch post count for each user
+                                $post_count_stmt = $conn->prepare("SELECT COUNT(*) FROM blogs WHERE user_id = :user_id");
+                                $post_count_stmt->bindParam(':user_id', $recent_user->id);
+                                $post_count_stmt->execute();
+                                $post_count = $post_count_stmt->fetchColumn();
+                                ?>
+                                <tr>
+                                    <td><?= $key + 1 ?></td>
+                                    <td><?= htmlspecialchars($recent_user->name) ?></td>
+                                    <td><?= htmlspecialchars($recent_user->email) ?></td>
+                                    <td>
+                                        <?php
+                                        $roleColors = [
+                                            'admin'  => 'success',
+                                            'author' => 'primary',
+                                            'user'   => 'secondary',
+                                            'editor' => 'info',
+                                            'moderator' => 'warning',
+                                        ];
+                                        $badgeColor = $roleColors[$recent_user->role] ?? 'secondary';
+                                        ?>
+
+                                        <span class="badge bg-<?= $badgeColor ?>">
+                                            <?= htmlspecialchars(ucfirst($recent_user->role)) ?>
+                                        </span>
+                                    </td>
+                                    <td><?= $post_count ?></td>
+                                    <td class="text-center">
+                                        <a href="edit_user.php?id=<?= $recent_user->id ?>" class="btn btn-sm btn-outline-primary me-2"><i class="bi bi-pencil-square"></i></a>
+                                        <?php if ($recent_user->id !== $_SESSION['user_id']) : ?>
+                                            <a href="delete_user.php?id=<?= $recent_user->id ?>" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                            <?php if ($recent_user->role !== 'admin') : ?>
+                                                <?php
+                                                $isAuthor = $recent_user->role === 'author';
+                                                $nextRole = $isAuthor ? 'user' : 'author';
+                                                $buttonText = $isAuthor ? 'Make User' : 'Make Author';
+                                                $buttonClass = $isAuthor ? 'btn-danger' : 'btn-primary';
+                                                ?>
+                                                <a href="change_role.php?id=<?= $recent_user->id ?>&role=<?= $nextRole ?>"
+                                                    class="btn btn-sm <?= $buttonClass ?> text-white">
+                                                    <?= $buttonText ?>
+                                                </a>
+                                            <?php endif; ?>
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php } else {
+                    echo "You are not authorized to view this page.";
+                }
+                ?>
             </div>
         </div>
 

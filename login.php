@@ -47,7 +47,7 @@ if (isset($_POST['login'])) {
                     } elseif ($user->role == 'user') {
                         header('location: user_dashboard.php');
                     } elseif ($user->role == 'author') {
-                        header('location: author.php');
+                        header('location: admin_dashboard.php');
                     } else {
                         header('location: guest_dashboard.php');
                     }
