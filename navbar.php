@@ -73,10 +73,6 @@
     }
   }
 </style>
-<?php
-include_once 'config.php';
-$current_page = basename($_SERVER['PHP_SELF']);
-?>
 <nav class="navbar navbar-expand-lg sticky-top">
   <div class="container">
     <a class="navbar-brand" href="index.php">

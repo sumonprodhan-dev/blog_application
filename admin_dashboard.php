@@ -43,7 +43,6 @@ $recent_users = $recent_users_stmt->fetchAll(PDO::FETCH_OBJ);
 </head>
 
 <body class="bg-light">
-
     <!-- Sidebar -->
     <div class="sidebar">
         <h4 class="mt-4"><i class="bi bi-gear-fill me-2"></i> Admin Panel</h4>
@@ -56,6 +55,9 @@ $recent_users = $recent_users_stmt->fetchAll(PDO::FETCH_OBJ);
         <a href="logout.php" class="text-danger"><i class="bi bi-box-arrow-right me-2 text-danger"></i> Logout</a>
     </div>
 
+    <!-- popup -->
+     <?php include 'popup.php'; ?>
+     
     <!-- Content -->
     <div class="content">
         <div class="admin_page_topbar shadow-sm mb-5">

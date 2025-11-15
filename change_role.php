@@ -22,7 +22,7 @@ if (isset($_GET['id']) && isset($_GET['role'])) {
     $stmt->bindParam(':id', $user_id);
 
     if ($stmt->execute()) {
-        $_SESSION['success'] = "User role updated successfully.";
+        $_SESSION['success_message'] = "Role changed successfully";
     } else {
         $_SESSION['error'] = "Failed to update user role.";
     }

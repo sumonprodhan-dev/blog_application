@@ -41,7 +41,7 @@ if (isset($_POST['login'])) {
                     $_SESSION['user_email'] = $user->email;
                     $_SESSION['user_image'] = $user->image;
                     $_SESSION['role'] = $user->role;
-                    print_r($_SESSION);
+                    $_SESSION['success_message'] = "Login successful";
                     if ($user->role == 'admin') {
                         header('location: admin_dashboard.php');
                     } elseif ($user->role == 'user') {
@@ -92,6 +92,7 @@ if (isset($_POST['login'])) {
 </head>
 
 <body>
+    <?php include 'popup.php'; ?>
     <section style="background-color: #0f172a; color: aliceblue;">
         <div class="container py-2">
             <div class="row align-items-center">

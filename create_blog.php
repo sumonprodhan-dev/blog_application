@@ -92,7 +92,7 @@ if (isset($_POST['createBlog'])) {
             $stmt->execute();
 
             move_uploaded_file($fileTmpName, $fileDestination);
-            $success = "Blog added successfully";
+            $_SESSION['success_message'] = "Your blog published";
             unset($data);
             header('location: blog.php');
             exit();

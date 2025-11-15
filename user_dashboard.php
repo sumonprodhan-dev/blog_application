@@ -40,8 +40,14 @@ $blog = $stmt->fetchAll(PDO::FETCH_OBJ);
     <a href="my_posts.php"><i class="bi bi-journal-text me-2"></i> My Posts</a>
     <a href="edit_user.php?id=<?= $_SESSION['user_id'] ?>"><i class="bi bi-person-lines-fill me-2"></i> Edit Profile</a>
     <a href="index.php" class="text-info"><i class="bi bi-box-arrow-left me-2 text-info"></i> Back to Website</a>
-    <a href="logout.php"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+    <a href="logout.php" class="text-danger"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
   </div>
+
+  <!-- popup -->
+
+  <?php 
+  include 'popup.php'; 
+  ?>
 
   <!-- Main Content -->
   <div class="content">

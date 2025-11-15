@@ -116,7 +116,7 @@ if (isset($_POST['register'])) {
             $stmt->execute();
             
             move_uploaded_file($fileTmpName, $fileDestination);
-            $success = "User added successfully";
+            $_SESSION['success_message'] = "Your account created successfully";
             header('location: login.php');
             unset($data);
         } catch (PDOException $e) {
