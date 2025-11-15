@@ -1,108 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php
-include_once 'config.php';
-if (!function_exists('create_slug')) {
-    function create_slug($string)
-    {
-        $string = strtolower($string);
-        $string = preg_replace('/[^a-z0-9_\s-]/', '', $string);
-        $string = preg_replace('/[\s-]+/', '-', $string);
-        $string = trim($string, '-');
-        return $string;
-    }
-}
 
-$data = [];
-$error = [];
-
-if (isset($_POST['createBlog'])) {
-    if (isset($_POST['title'])) {
-        $data['title'] = $_POST['title'];
-    } else {
-        $error['title'] = "Title is required";
-    }
-
-
-    if (isset($_POST['content'])) {
-        $data['content'] = $_POST['content'];
-    } else {
-        $error['content'] = "Content is required";
-    }
-
-
-    if (isset($_FILES['image'])) {
-        $fileName = $_FILES['image']['name'];
-        $fileTmpName = $_FILES['image']['tmp_name'];
-        $fileSize = $_FILES['image']['size'];
-        $fileError = $_FILES['image']['error'];
-        $fileType = $_FILES['image']['type'];
-
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowedExt = ["jpg", "jpeg", "png", "webp"];
-
-        if (in_array($fileExt, $allowedExt)) {
-            if ($fileError === 0) {
-                if ($fileSize < 5000000) {
-                    $newFileName = uniqid('', true) . "." . date('ymd') . "." . $fileExt;
-                    $fileDestination = 'assets/images/blogs/' . $newFileName;
-                    $data['image'] = $newFileName;
-                } else {
-                    $error['image'] = "File size is too large (5MB)";
-                }
-            } else {
-                $error['image'] = "There was an error uploading your file";
-            }
-        } else {
-            $error['image'] = "Unsupported file type";
-        }
-    }
-
-    if (isset($_POST['status'])) {
-        $allow = ["publish", "draft"];
-        if (in_array($_POST['status'], $allow)) {
-            $data['status'] = $_POST['status'];
-        } else {
-            $error['status'] = "Invalid status";
-        }
-    } else {
-        $error['status'] = "Status is required";
-    }
-
-    if (isset($_POST['category'])) {
-        $data['category'] = $_POST['category'];
-    } else {
-        $error['category'] = "Category is required";
-    }
-
-    // print_r($data);
-
-    if (empty($error)) {
-        try {
-            $slug = create_slug($data['title']);
-            $sql = "INSERT INTO blogs (user_id, title, slug, description, image, status, category_id) VALUES (:user_id, :title, :slug, :content, :image, :status, :category_id)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':user_id', $_SESSION['user_id']);
-            $stmt->bindParam(':title', $data['title']);
-            $stmt->bindParam(':slug', $slug);
-            $stmt->bindParam(':content', $data['content']);
-            $stmt->bindParam(':image', $data['image']);
-            $stmt->bindParam(':status', $data['status']);
-            $stmt->bindParam(':category_id', $data['category']);
-            $stmt->execute();
-
-            move_uploaded_file($fileTmpName, $fileDestination);
-            $_SESSION['success_message'] = "Your blog published";
-            unset($data);
-            header('location: blog.php');
-            exit();
-        } catch (PDOException $e) {
-            $error['database'] = $e->getMessage();
-        }
-    }
-    // print_r($error);
-}
-?>
 
 <head>
     <title>Home | Blog Application</title>
@@ -125,6 +23,110 @@ if (isset($_POST['createBlog'])) {
             <h2 class="text-center fs-1">Create New Blog</h2>
         </div>
     </section>
+
+    <?php
+    include_once 'config.php';
+    if (!function_exists('create_slug')) {
+        function create_slug($string)
+        {
+            $string = strtolower($string);
+            $string = preg_replace('/[^a-z0-9_\s-]/', '', $string);
+            $string = preg_replace('/[\s-]+/', '-', $string);
+            $string = trim($string, '-');
+            return $string;
+        }
+    }
+
+    $data = [];
+    $error = [];
+
+    if (isset($_POST['createBlog'])) {
+        if (isset($_POST['title'])) {
+            $data['title'] = $_POST['title'];
+        } else {
+            $error['title'] = "Title is required";
+        }
+
+
+        if (isset($_POST['content'])) {
+            $data['content'] = $_POST['content'];
+        } else {
+            $error['content'] = "Content is required";
+        }
+
+
+        if (isset($_FILES['image'])) {
+            $fileName = $_FILES['image']['name'];
+            $fileTmpName = $_FILES['image']['tmp_name'];
+            $fileSize = $_FILES['image']['size'];
+            $fileError = $_FILES['image']['error'];
+            $fileType = $_FILES['image']['type'];
+
+            $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $allowedExt = ["jpg", "jpeg", "png", "webp"];
+
+            if (in_array($fileExt, $allowedExt)) {
+                if ($fileError === 0) {
+                    if ($fileSize < 5000000) {
+                        $newFileName = uniqid('', true) . "." . date('ymd') . "." . $fileExt;
+                        $fileDestination = 'assets/images/blogs/' . $newFileName;
+                        $data['image'] = $newFileName;
+                    } else {
+                        $error['image'] = "File size is too large (5MB)";
+                    }
+                } else {
+                    $error['image'] = "There was an error uploading your file";
+                }
+            } else {
+                $error['image'] = "Unsupported file type";
+            }
+        }
+
+        if (isset($_POST['status'])) {
+            $allow = ["publish", "draft"];
+            if (in_array($_POST['status'], $allow)) {
+                $data['status'] = $_POST['status'];
+            } else {
+                $error['status'] = "Invalid status";
+            }
+        } else {
+            $error['status'] = "Status is required";
+        }
+
+        if (isset($_POST['category'])) {
+            $data['category'] = $_POST['category'];
+        } else {
+            $error['category'] = "Category is required";
+        }
+
+        // print_r($data);
+
+        if (empty($error)) {
+            try {
+                $slug = create_slug($data['title']);
+                $sql = "INSERT INTO blogs (user_id, title, slug, description, image, status, category_id) VALUES (:user_id, :title, :slug, :content, :image, :status, :category_id)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bindParam(':user_id', $_SESSION['user_id']);
+                $stmt->bindParam(':title', $data['title']);
+                $stmt->bindParam(':slug', $slug);
+                $stmt->bindParam(':content', $data['content']);
+                $stmt->bindParam(':image', $data['image']);
+                $stmt->bindParam(':status', $data['status']);
+                $stmt->bindParam(':category_id', $data['category']);
+                $stmt->execute();
+
+                move_uploaded_file($fileTmpName, $fileDestination);
+                $_SESSION['success_message'] = "Your blog published";
+                unset($data);
+                header('location: blog.php');
+                exit();
+            } catch (PDOException $e) {
+                $error['database'] = $e->getMessage();
+            }
+        }
+        // print_r($error);
+    }
+    ?>
 
     <div class="container mt-5 pt-4 mb-5 shadow-lg p-4 rounded">
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="POST" enctype="multipart/form-data">

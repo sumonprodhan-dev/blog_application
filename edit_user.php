@@ -57,17 +57,53 @@ if (isset($_POST['update_user'])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Edit User</title>
+    <title>Update Profile </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <style>
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            padding: 15px 30px;
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #0d6efd !important;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-back {
+            border-radius: 8px;
+            background-color: #fff;
+            color: #0d6efd;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back:hover {
+            background-color: #0d6efd;
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body class="bg-light">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <a class="navbar-brand" href="user_dashboard.php">My Profile</a>
+            <a href="user_dashboard.php" class="btn btn-outline-primary btn-back">
+                <i class="bi bi-box-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </nav>
+    <div class="container my-5">
+        <div class="row justify-content-center ">
+            <div class="col-md-6 ">
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="mb-0">Edit User</h5>
+                        <h5 class="mb-0">Update Profile</h5>
                     </div>
                     <div class="card-body">
                         <form method="POST">
@@ -97,6 +133,7 @@ if (isset($_POST['update_user'])) {
             </div>
         </div>
     </div>
+    <?php include 'footer.php'; ?>
 </body>
 
 </html>

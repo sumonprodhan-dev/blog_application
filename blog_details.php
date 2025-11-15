@@ -1,28 +1,3 @@
-<?php
-include_once 'config.php';
-
-$blog_slug = isset($_GET['slug']) ? $_GET['slug'] : null;
-
-if (!$blog_slug) {
-    header("Location: blog.php");
-    exit;
-}
-
-$sql = "SELECT * FROM blogs WHERE slug = :slug";
-$stmt = $conn->prepare($sql);
-$stmt->execute([':slug' => $blog_slug]);
-$blog = $stmt->fetch(PDO::FETCH_OBJ);
-
-if (!$blog) {
-    header("Location: blog.php");
-    exit;
-}
-
-$recent_sql = "SELECT id, title, slug, image, created_at FROM blogs ORDER BY created_at DESC LIMIT 5";
-$recent_result = $conn->query($recent_sql);
-$recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -37,32 +12,38 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
       height: 400px;
       object-fit: cover;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
+
     .blog-meta {
       color: #6c757d;
       font-size: 0.95rem;
     }
+
     .blog-content {
       line-height: 1.8;
       color: #333;
       font-size: 20px;
     }
+
     .sidebar h5 {
       font-weight: 600;
       border-bottom: 2px solid #007bff;
       padding-bottom: 8px;
     }
+
     .recent-post-img {
       width: 60px;
       height: 60px;
       object-fit: cover;
       border-radius: 8px;
     }
+
     .breadcrumb a {
       color: #007bff;
       text-decoration: none;
     }
+
     .breadcrumb a:hover {
       text-decoration: underline;
     }
@@ -72,6 +53,29 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
 <body>
   <!-- Header -->
   <?php include 'navbar.php'; ?>
+  <?php
+
+  $blog_slug = isset($_GET['slug']) ? $_GET['slug'] : null;
+
+  if (!$blog_slug) {
+    header("Location: blog.php");
+    exit;
+  }
+
+  $sql = "SELECT * FROM blogs WHERE slug = :slug";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute([':slug' => $blog_slug]);
+  $blog = $stmt->fetch(PDO::FETCH_OBJ);
+
+  if (!$blog) {
+    header("Location: blog.php");
+    exit;
+  }
+
+  $recent_sql = "SELECT id, title, slug, image, created_at FROM blogs ORDER BY created_at DESC LIMIT 5";
+  $recent_result = $conn->query($recent_sql);
+  $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
+  ?>
 
   <!-- Page Header -->
   <section class="page-header bg-info text-white py-5">
@@ -95,9 +99,9 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
         <div class="col-lg-8">
           <article class="blog-detail">
             <!-- Blog Image -->
-            <img src="./assets/images/blogs/<?php echo htmlspecialchars($blog->image); ?>" 
-                 alt="<?php echo htmlspecialchars($blog->title); ?>" 
-                 class="img-fluid blog-detail-img w-100 mb-4">
+            <img src="./assets/images/blogs/<?php echo htmlspecialchars($blog->image); ?>"
+              alt="<?php echo htmlspecialchars($blog->title); ?>"
+              class="img-fluid blog-detail-img w-100 mb-4">
 
             <!-- Meta Info -->
             <div class="blog-meta mb-4">
@@ -117,9 +121,9 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
             <?php if (!empty($blog->tags)): ?>
               <div class="mt-5">
                 <strong>Tags:</strong>
-                <?php 
+                <?php
                 $tags = explode(',', $blog->tags);
-                foreach ($tags as $tag): 
+                foreach ($tags as $tag):
                 ?>
                   <span class="badge bg-secondary me-1"><?php echo trim(htmlspecialchars($tag)); ?></span>
                 <?php endforeach; ?>
@@ -130,16 +134,16 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
             <div class="mt-5 pt-4 border-top">
               <strong>Share this post:</strong>
               <div class="mt-2">
-                <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" 
-                   target="_blank" class="btn btn-outline-primary btn-sm">
+                <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>"
+                  target="_blank" class="btn btn-outline-primary btn-sm">
                   <i class="bi bi-facebook"></i> Facebook
                 </a>
-                <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>&text=<?php echo urlencode($blog->title); ?>" 
-                   target="_blank" class="btn btn-outline-info btn-sm">
+                <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>&text=<?php echo urlencode($blog->title); ?>"
+                  target="_blank" class="btn btn-outline-info btn-sm">
                   <i class="bi bi-twitter"></i> Twitter
                 </a>
-                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>" 
-                   target="_blank" class="btn btn-outline-linkedin btn-sm">
+                <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode($_SERVER['REQUEST_URI']); ?>"
+                  target="_blank" class="btn btn-outline-linkedin btn-sm">
                   <i class="bi bi-linkedin"></i> LinkedIn
                 </a>
               </div>
@@ -153,11 +157,11 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
           <div class="sidebar mb-4 p-4 bg-light rounded">
             <h5 class="mb-3">Recent Posts</h5>
             <ul class="list-unstyled">
-              <?php foreach ($recent_blogs as $recent): 
+              <?php foreach ($recent_blogs as $recent):
               ?>
                 <li class="d-flex mb-3">
-                  <img src="./assets/images/blogs/<?php echo htmlspecialchars($recent->image); ?>" 
-                       alt="" class="recent-post-img me-3">
+                  <img src="./assets/images/blogs/<?php echo htmlspecialchars($recent->image); ?>"
+                    alt="" class="recent-post-img me-3">
                   <div>
                     <a href="blog_details.php?slug=<?= urlencode($recent->slug) ?>" class="text-decoration-none">
                       <?php echo htmlspecialchars($recent->title); ?>
@@ -173,7 +177,7 @@ $recent_blogs = $recent_result->fetchAll(PDO::FETCH_OBJ);
           <div class="sidebar p-4 bg-light rounded">
             <h5 class="mb-3">Categories</h5>
             <ul class="list-unstyled">
-              <?php 
+              <?php
               $category_sql = "SELECT id, name FROM categories";
               $category_result = $conn->query($category_sql);
               $categories = $category_result->fetchAll(PDO::FETCH_OBJ);
