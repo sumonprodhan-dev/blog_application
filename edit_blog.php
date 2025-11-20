@@ -91,34 +91,34 @@ if (isset($_POST['updateBlog'])) {
         }
     }
 
-    if (empty($error)) {
+      if (empty($error)) {
         try {
-            $slug = create_slug($data['title']);
-            $sql = "UPDATE blogs SET title = :title, slug = :slug, description = :content, image = :image, status = :status, category_id = :category_id WHERE id = :id";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':title', $data['title']);
-            $stmt->bindParam(':slug', $slug);
-            $stmt->bindParam(':content', $data['content']);
-            $stmt->bindParam(':image', $data['image']);
-            $stmt->bindParam(':status', $data['status']);
-            $stmt->bindParam(':category_id', $data['category_id']);
-            $stmt->bindParam(':id', $data['id']);
-            
-            if ($stmt->execute()) {
-                header('Location: blog.php?status=updated');
-                exit();
-            } else {
-                $error['database'] = "Failed to update blog.";
-            }
+          $slug = create_slug($data['title']);
+          $sql = "UPDATE blogs SET title = :title, slug = :slug, description = :content, image = :image, status = :status, category_id = :category_id WHERE id = :id";
+          $stmt = $conn->prepare($sql);
+          $stmt->bindParam(':title', $data['title']);
+          $stmt->bindParam(':slug', $slug);
+          $stmt->bindParam(':content', $data['content']);
+          $stmt->bindParam(':image', $data['image']);
+          $stmt->bindParam(':status', $data['status']);
+          $stmt->bindParam(':category_id', $data['category_id']);
+          $stmt->bindParam(':id', $data['id']);
+
+          if ($stmt->execute()) {
+            echo "<script>window.location.href = 'blog.php';</script>";
+            exit();
+          } else {
+            $error['database'] = "Failed to update blog.";
+          }
         } catch (PDOException $e) {
-            $error['database'] = "Database error: " . $e->getMessage();
+          $error['database'] = "Database error: " . $e->getMessage();
         }
+      }
     }
-}
 
 
 
-?>
+    ?>
   </div>
   <section class="create-blog-header ">
     <div class="container">
